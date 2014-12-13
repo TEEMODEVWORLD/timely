@@ -1,8 +1,8 @@
 <?php
 
-class timely {
+class Timely extends DateTime {
 
-	private $LOCALE;
+	private $TIMEZONE;
 	private $TIMEFORMAT = array ( "past" => "ago" );
 	private $FROMDATETIME;
 	private $THRESHOLDS = array(
@@ -12,10 +12,9 @@ class timely {
             "d" => 1,  // days to month
             "M" => 1   // months to year
         );
-	private $SUFFIX = "ago";
+	private static $SUFFIX = "ago";
 
-	public function __construct($locale)
-	{		
+	public function __construct($timezone) {		
 		/*
 		if( is_null( $locale )) {
 		}
@@ -27,31 +26,31 @@ class timely {
 		$this->FROMDATETIME =  new DateTime( $value );
 	}
 
-	public function pluralize($count, $singular, $plural = false) {
+	public static function pluralize($count, $singular, $plural = false) {
 		if (!$plural) $plural = $singular . 's';
 		return ($count == 1 ? $singular : $plural) ;
 	}
 
 	
 
-	private function _getRelativeTime( $intervalObj ) {
+	private static function _getRelativeTime( $intervalObj ) {
 
 		$prefix = "";
 		if ( $intervalObj->y >= 1 ) { 
-			$prefix = $intervalObj->y."year".$this->pluralize( $intervalObj->y ); 
+			$prefix = $intervalObj->y."year".static::pluralize( $intervalObj->y ); 
 		} else if ($intervalObj->m >= 1) {
-			$prefix = $intervalObj->m."month".$this->pluralize( $intervalObj->m ); 
+			$prefix = $intervalObj->m."month".static::pluralize( $intervalObj->m ); 
 		} else if ($intervalObj->d >= 1) {
-			$prefix = $intervalObj->d."day".$this->pluralize( $intervalObj->d ); 
+			$prefix = $intervalObj->d."day".static::pluralize( $intervalObj->d ); 
 		} else if ($intervalObj->h >= 1) {
-			$prefix = $intervalObj->h."hour".$this->pluralize( $intervalObj->h ); 
+			$prefix = $intervalObj->h."hour".static::pluralize( $intervalObj->h ); 
 		} else if ($intervalObj->i >= 1) {
-			$prefix = $intervalObj->i."hour".$this->pluralize( $intervalObj->i ); 
+			$prefix = $intervalObj->i."hour".static::pluralize( $intervalObj->i ); 
 		} else {
-			$prefix = $intervalObj->s."hour".$this->pluralize( $intervalObj->s ); 
+			$prefix = $intervalObj->s."hour".static::pluralize( $intervalObj->s ); 
 		}
 		
-		echo $prefix." ".$this->SUFFIX;
+		echo $prefix." ".static::$SUFFIX;
 
 	}
 	
@@ -67,43 +66,10 @@ class timely {
 		
 	}
 
-/*
-
-/*
-		$seconds = $intervalObj->s;
-		$minutes = $intervalObj->i;
-		$hours = $intervalObj->h;
-		$days = $intervalObj->d;
-		$months = $intervalObj->m;
-		$years = $intervalObj->y;
-	
-
-    function relativeTime(posNegDuration, withoutSuffix, locale) {
-        var duration = moment.duration(posNegDuration).abs(),
-            seconds = round(duration.as('s')),
-            minutes = round(duration.as('m')),
-            hours = round(duration.as('h')),
-            days = round(duration.as('d')),
-            months = round(duration.as('M')),
-            years = round(duration.as('y')),
-
-            args = seconds < relativeTimeThresholds.s && ['s', seconds] ||
-                minutes === 1 && ['m'] ||
-                minutes < relativeTimeThresholds.m && ['mm', minutes] ||
-                hours === 1 && ['h'] ||
-                hours < relativeTimeThresholds.h && ['hh', hours] ||
-                days === 1 && ['d'] ||
-                days < relativeTimeThresholds.d && ['dd', days] ||
-                months === 1 && ['M'] ||
-                months < relativeTimeThresholds.M && ['MM', months] ||
-                years === 1 && ['y'] || ['yy', years];
-
-        args[2] = withoutSuffix;
-        args[3] = +posNegDuration > 0;
-        args[4] = locale;
-        return substituteTimeAgo.apply({}, args);
-    }
-
-*/
+	public static function getRelTimeFromNow( $fromdatetime ) {
+		$todatetime = new DateTime();
+		$interval = $todatetime->diff(new DateTime( $fromdatetime ));
+		return static::_getRelativeTime( $interval );
+	}
 	
 }
