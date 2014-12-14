@@ -12,7 +12,7 @@ class Timely extends DateTime {
             "d" => 1,  // days to month
             "M" => 1   // months to year
         );
-	private static $SUFFIX = "ago";
+	private static $SUFFIX = "전";
 
 	public function __construct($timezone) {		
 		/*
@@ -27,43 +27,27 @@ class Timely extends DateTime {
 	}
 
 	public static function pluralize($count, $singular, $plural = false) {
-		if (!$plural) $plural = $singular . 's';
-		return ($count == 1 ? $singular : $plural) ;
-	}
-
-	
+		$result = $singular;
+		if( !$plural && $count != 1 ) { $result = $singular.'s'; }
+		return sprintf("%s %s", $singular, static::$SUFFIX);
+	}	
 
 	private static function _getRelativeTime( $intervalObj ) {
-
-		$prefix = "";
+		$relativeTimeResult = "";
 		if ( $intervalObj->y >= 1 ) { 
-			$prefix = $intervalObj->y."year".static::pluralize( $intervalObj->y ); 
+			$relativeTimeResult = $intervalObj->y.static::pluralize( $intervalObj->y , "년" , true ); 
 		} else if ($intervalObj->m >= 1) {
-			$prefix = $intervalObj->m."month".static::pluralize( $intervalObj->m ); 
+			$relativeTimeResult = $intervalObj->m.static::pluralize( $intervalObj->m , "월" , true ); 
 		} else if ($intervalObj->d >= 1) {
-			$prefix = $intervalObj->d."day".static::pluralize( $intervalObj->d ); 
+			$relativeTimeResult = $intervalObj->d.static::pluralize( $intervalObj->d , "일" , true ); 
 		} else if ($intervalObj->h >= 1) {
-			$prefix = $intervalObj->h."hour".static::pluralize( $intervalObj->h ); 
+			$relativeTimeResult = $intervalObj->h.static::pluralize( $intervalObj->h ,"시간" , true ); 
 		} else if ($intervalObj->i >= 1) {
-			$prefix = $intervalObj->i."hour".static::pluralize( $intervalObj->i ); 
+			$relativeTimeResult = $intervalObj->i.static::pluralize( $intervalObj->i, "분" , true ); 
 		} else {
-			$prefix = $intervalObj->s."hour".static::pluralize( $intervalObj->s ); 
-		}
-		
-		echo $prefix." ".static::$SUFFIX;
-
-	}
-	
-	public function getRelativeTime( $value ) {
-		// 현재 서버 시간 
-		// 해당 시간 시간
-		$todatetime = new DateTime();
-		if ( is_null ( $this->FROMDATETIME ) ) {
-			$this->FROMDATETIME = new DateTime( $value );
+			$relativeTimeResult = $intervalObj->s.static::pluralize( $intervalObj->s, "초" , true ); 
 		}		
-		$interval = $todatetime->diff($this->FROMDATETIME);
-		return $this->_getRelativeTime( $interval );
-		
+		return $relativeTimeResult;
 	}
 
 	public static function getRelTimeFromNow( $fromdatetime ) {
@@ -73,3 +57,5 @@ class Timely extends DateTime {
 	}
 	
 }
+
+?>
