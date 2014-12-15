@@ -1,6 +1,8 @@
 <?php
 	require_once "../src/timely.php";
 	header('Content-Type: text/html; charset=utf-8');
-	echo Timely::getRelTimeFromNow("2014-12-14");
+	//echo Timely::getRelTimeFromNow("2014-12-14");
+
+	print_r( Timely::now()->addYears(2) );
 
 ?>
