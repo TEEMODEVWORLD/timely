@@ -69,7 +69,11 @@ class Timely extends DateTime {
 	}
 
 	public function getCalendar() {
-		return $this->month(1);
+		$Cal = array();
+		for( $i = 1 ; $i <= $this->daysInMonth ; $i++ ) {
+			$Cal[] = $this->getDay( $i );
+		}
+		return $Cal;
 	}
 
 	public function month ( $value ) {
@@ -79,20 +83,22 @@ class Timely extends DateTime {
 
 	public function day( $value ) {
 		$this->day = $value;
-		print_r($this);
 		return $this;
 	}
 
-	public function startDayOfMonth() {
-		$result = array(
-			"date" => 1,
-			"day" => $this->day(1)->format('w')
+	public function getDay( $value ) {
+		return $result = array(
+			"date" => $value,
+			"day" => $this->day($value)->format('w')
 		);
-		return $result; 
+	}
+
+	public function startDayOfMonth() {		
+		return $this->getDay(1); 
 	}
 
 	public function endDayOfMonth() {
-		return $this->daysInMonth;
+		return $this->getDay($this->daysInMonth); 
 	}
 	
 	public function addYears( $value ) {
@@ -181,7 +187,6 @@ class Timely extends DateTime {
     }
 
 	public function __get( $name ) {
-
 		switch ($name) {
             case 'year':
             case 'month':
