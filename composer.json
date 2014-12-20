@@ -4,10 +4,9 @@
 	"descripton" : "PHP datetime library",
 	"keywords" : [ "datetime" , "php" ],
 	"license" : "MIT",
-	"require" : { "php" : ">=5.0" },
+	"require" : { "php" : ">=5.0.0" },
+	"homepage" : "https://github.com/TEEMODEVWORLD/timely",
 	"autoload" : {
-		"psr-0" : {
-			"Timely" : "src"
-		}
+		"classmap": ["src/"]
 	}
 }

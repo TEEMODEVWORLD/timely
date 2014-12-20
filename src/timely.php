@@ -1,5 +1,6 @@
 <?php
 
+
 class Timely extends DateTime {
 
 	private $TIMEZONE;
@@ -61,11 +62,19 @@ class Timely extends DateTime {
 		return static::_getRelativeTime( $interval );
 	}
 
-	public static function now($time = null) {
-        return new static( null, $tz );
+	public static function now($timezone = null) {
+        return new static( null, $timezone );
     }
 
+	public static function create ( $timestring , $timezone = null ) {
+		return new static( $timestring , $timezone );
+	}
+
 	public static function Calendar( $year , $month ) {
+	}
+
+	public function toS ( $format = "yyyy-MM-dd" ) {
+		return $this->format ( $format );
 	}
 
 	public function getCalendar() {
