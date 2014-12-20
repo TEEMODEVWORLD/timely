@@ -3,6 +3,9 @@
 	header('Content-Type: text/html; charset=utf-8');
 	//echo Timely::getRelTimeFromNow("2014-12-14");
 
-	print_r( Timely::now()->addYears(2) );
+	//print_r( Timely::now()->addYears(2) );
+
+	//print_r(  Timely::now()->endDayOfMonth());
+	print_r( Timely::now()->getCalendar() );
 
 ?>

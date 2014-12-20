@@ -249,6 +249,7 @@ class Timely extends DateTime {
                 break;
             default:
                 throw new InvalidArgumentException(sprintf("Unknown setter '%s'", $name));
+				break;
         }
 	}
 
